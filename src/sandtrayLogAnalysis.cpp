@@ -542,7 +542,7 @@ double SDofInts (std::vector<int> in)
 
 	for (int a = 0; a < (int)in.size(); a++)
 	{
-		sumDev = ((in[a] - mean) * (in[a] - mean));
+		sumDev += (((double)in[a] - mean) * ((double)in[a] - mean));
 	}
 
 	sdReturn = std::sqrt(sumDev / (double)in.size());
@@ -559,7 +559,7 @@ double SDofDoubles (std::vector<double> in)
 
 	for(int a = 0; a < (int)in.size(); a++)
 	{
-		sumDev = ((in[a] - mean) * (in[a] - mean));
+		sumDev += ((in[a] - mean) * (in[a] - mean));
 	}
 
 	sdReturn = std::sqrt(sumDev / (double)in.size());
