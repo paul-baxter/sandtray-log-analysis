@@ -37,7 +37,7 @@ int main(int argc, char *argv[])
 	//eventually replace following with child identifier...
 	std::string OUTFILE = "ados-session-data.dat";
 
-	
+
 	////////////////////////////////////////
 	// PROCESSING THRESHOLDS
 	int MAX_REACTION = 60;		//max time to wait (in s) before considering a reaction time to a prompt to be too large
@@ -54,6 +54,20 @@ int main(int argc, char *argv[])
 	DIR *Dir;
 	struct dirent *DirEntry;
 	Dir = opendir(PATH.c_str());
+
+	if (Dir)
+	{
+		std::cout << "Directory found: " << std::endl;
+		std::cout << "\t" << PATH << std::endl;
+		std::cout << std::endl;
+	}
+	else
+	{
+		std::cout << "Cannot open directory: " << std::endl;
+		std::cout << "\t" << PATH << std::endl;
+		std::cout << std::endl;
+		return 1;
+	}
 
 	while ((DirEntry = readdir(Dir)))
 	{
