@@ -25,36 +25,36 @@ int main(int argc, char *argv[])
 	printf("\n");
 	printf("=================================\n");
 	printf(" Sandtray Log Analysis Programme\n");
-	printf(" 16/11/15\n");
+	printf("         P. Baxter, 2016\n");
 	printf("=================================\n");
 	printf("\n");
-    
+
 	//eventually replace following with user selection...
 	//std::string PATH = "C:/Users/pebaxter/Dropbox/RESULTS/2015-06 WoZ sandtray therapy/child 1/session 6/";
 	std::string PATH = "C:/Users/pebaxter/Documents/Dropbox/RESULTS/2015-06 WoZ sandtray therapy/L.C/ados TT/";				//test pathname
 	std::string OUTPATH = "C:/Users/pebaxter/Documents/Dropbox/RESULTS/2015-06 WoZ sandtray therapy/L.C/";
-	
+
 	//eventually replace following with child identifier...
 	std::string OUTFILE = "ados-session-data.dat";
-	
+
 	
 	////////////////////////////////////////
 	// PROCESSING THRESHOLDS
 	int MAX_REACTION = 60;		//max time to wait (in s) before considering a reaction time to a prompt to be too large
-	
-	
+
+
 	/////////////////////////////////////////////////////////////////////////////////////////////////////
 	//step 1
 	//	-- get list of filenames in the assigned directory
 	std::vector<std::string> fileNames;
 	fileNames.clear();
 	int fileCount = 0;		//number of files in the directory
-	
+
 	unsigned char isFile = 0x8;		//use 0x4 for finding folders
 	DIR *Dir;
 	struct dirent *DirEntry;
 	Dir = opendir(PATH.c_str());
-	
+
 	while ((DirEntry = readdir(Dir)))
 	{
 		if (DirEntry->d_type == isFile)
@@ -66,7 +66,7 @@ int main(int argc, char *argv[])
 	}
 	std::cout << "Total number of files found: " << fileCount << std::endl;
 	std::cout << std::endl;
-	
+
 	//if no files, then don't bother continuing
 	if (fileCount == 0)
 	{
@@ -74,11 +74,11 @@ int main(int argc, char *argv[])
 		std::cout << std::endl;
 		return 1;
 	}
-	
+
 	//add a check to remove all non-text files
 	std::string extension = ".txt";
 	std::vector<int> toRemove;		//list to remove from file list
-	toRemove.clear();	
+	toRemove.clear();
 	for (int aa = 0; aa < (int)fileNames.size(); aa++)
 	{
 		//iterate through file names
@@ -104,8 +104,8 @@ int main(int argc, char *argv[])
 		std::cout << fileNames[bb] << std::endl;
 	}
 	std::cout << std::endl;
-	
-	
+
+
 	/////////////////////////////////////////////////////////////////////////////////////////////////////
 	//step 1a
 	//	-- set up variables to handle all session data across multiple files
@@ -140,19 +140,19 @@ int main(int argc, char *argv[])
 	bool promptFlag = false;
 	bool robotLastMove = false;		//if robot was last to move, then this is true
 	int lineCounter = 0;
-	
+
 	/////////////////////////////////////////////////////////////////////////////////////////////////////
 	//step 1b
 	//	-- variable names for handling different file names
 	std::ifstream fileStream;										//filestream to read from
 	char charFileName[512];										//very large just in case...
 	std::string fileName = "";										//name of the file to read from
-	
-	
+
+
 	/////////////////////////////////////////////////////////////////////////////////////////////////////
 	//step 2
 	//	-- given each of the files in the directory in turn, open and process
-	
+
 	for (int _counter = 0; _counter < fileCount; _counter++)
 	{
 		fileName = PATH + fileNames[_counter];				//just the first file for now - increment for more than one file
@@ -162,7 +162,7 @@ int main(int argc, char *argv[])
 		strcpy (charFileName, a);
 		fileStream.open(charFileName, std::fstream::in);				//open file stream for reading
 		delete a;		//memory clean-up
-		
+
 		//check file successfully opened before continuing
 		readLine = "";
 		if (fileStream.is_open())
@@ -180,7 +180,6 @@ int main(int argc, char *argv[])
 				fileStream.close();
 				continue;		//exit the while, go to next file...
 			}
-			//std::cout << "File header: " + readLine << std::endl;
 		}
 		else
 		{
@@ -189,31 +188,15 @@ int main(int argc, char *argv[])
 			fileStream.close();
 			return 1;
 		}
-		
+
 		/////////////////////////////////////////////////////////////////////////////////////////////////////
 		//step 3
 		//	-- extract data, process, add to global counters, then close file
 		//data collection
-		/* int goodChildMoves = 0;
-		int badChildMoves = 0;
-		int goodRobotMoves = 0;
-		int badRobotMoves = 0; */
 		startTime = 0;
 		endTime = 0;
 		timeOfLastPrompt = 0;
 		lengthTime = 0;
-		/* int numYourTurn = 0;
-		int numMyTurn = 0;
-		int numGoodFeedback = 0;
-		int numBadFeedback = 0;
-		int numLibraries = 0; */
-		//data containers
-		/* std::vector<int> reactionTime;		//time between robot prompt and child move
-		reactionTime.clear();
-		std::vector<double> moveSpeeds;	//speed of child moves
-		moveSpeeds.clear();
-		std::vector<double> turnTaking;	//for each child move, whether turn taking happened
-		turnTaking.clear(); */
 		//loop variables
 		readLine = "";
 		firstFlag = true;
@@ -224,19 +207,14 @@ int main(int argc, char *argv[])
 		while (std::getline(fileStream, readLine))
 		{
 			//read file until end
-			//std::cout << readLine << std::endl;
 			std::vector<std::string> splitLine = Split(readLine,',');		//split the line read in
-			/*if (splitLine.size() == 4)
-			{
-				std::cout << ">>>  " + splitLine[3] << std::endl;
-			}*/
-						
+
 			if (splitLine.size() < 3)		//minimum of three elements to every line read from file
 			{
 				std::cout << "ERROR: problem reading line from file: " + readLine << std::endl;
 				continue;		//skip to next while loop iteration
 			}
-			
+
 			if (splitLine[1] == "SandtrayEvent")					//////////////////// SANDTRAY EVENT
 			{
 				if (splitLine[2] == "i am a touchscreen")
@@ -261,7 +239,6 @@ int main(int argc, char *argv[])
 						}
 						else
 						{
-							//std::cout << "\tReaction: " << elapsed << std::endl;
 							reactionTime.push_back(elapsed);
 						}
 						promptFlag = false;
@@ -297,7 +274,6 @@ int main(int argc, char *argv[])
 						}
 						else
 						{
-							//std::cout << "\tReaction: " << elapsed << std::endl;
 							reactionTime.push_back(elapsed);
 						}
 						promptFlag = false;
@@ -358,29 +334,29 @@ int main(int argc, char *argv[])
 					}
 					else if ((splitLine[2] == "behaviour") && (splitLine[3] == "your-turn"))
 					{
-						timeOfLastPrompt = TimeInSeconds(splitLine[0]);	
+						timeOfLastPrompt = TimeInSeconds(splitLine[0]);
 						numYourTurn++;
 						promptFlag = true;
 						//std::cout << "Robot prompt: " << promptFlag << std::endl;
 					}
 					else if ((splitLine[2] == "behaviour") && (splitLine[3] == "my-turn"))
-					{	
+					{
 						numMyTurn++;
 					}
 					else if ((splitLine[2] == "behaviour") && (splitLine[3] == "bravo"))
-					{	
+					{
 						numGoodFeedback++;
 					}
 					else if ((splitLine[2] == "behaviour") && (splitLine[3] == "bad"))
-					{	
+					{
 						numBadFeedback++;
 					}
 					else if ((splitLine[2] == "move") && (splitLine[3] == "good"))
-					{	
+					{
 						//goodRobotMoves++;
 					}
 					else if ((splitLine[2] == "move") && (splitLine[3] == "bad"))
-					{	
+					{
 						//badRobotMoves++;
 					}
 				}
@@ -391,12 +367,12 @@ int main(int argc, char *argv[])
 			}
 
 			endTime = TimeInSeconds(splitLine[0]);
-			
+
 			lineCounter++;
 		}	//END OF WHILE LOOP
 
 		lengthTime = endTime - startTime;
-		
+
 		if (lineCounter < 4)
 		{
 			//nothing happens in this file!
@@ -409,52 +385,20 @@ int main(int argc, char *argv[])
 			std::cout << "No valid start event occurred in this file!" << std::endl;
 			lengthTime = 0;
 		}
-		
-		/* promptFlag = false;
-		std::cout << std::endl;
-		if (endFlag == true)
-		{		//an end event has been found, so can generate stats
-			std::cout << "*** End of session detected, no need to look further ***" << std::endl;
-		}
-		else
-		{		//an end event hasn't yet been found, need to combine with further data...
-			std::cout << "!!! Not end of session, wait for further files !!!" << std::endl;
-		}
-		std::cout << std::endl; */
-		
+
 		fileStream.close();
-		
+
 		/////////////////////////////////////////////////////////////////////////////////////////////////////
 		//step 4
 		//	-- calculate overall session stats
-		
+
 		std::cout << "----- End of file detected, total length (s): " << lengthTime << std::endl;
-		/*std::cout << "  Cumulative stats:" << std::endl;
-		std::cout << std::endl;
-		std::cout << "Total number of events: " << lineCounter << std::endl;
-		std::cout << std::endl;
-		std::cout << "Num libraries used:\t" << numLibraries << std::endl;
-		std::cout << "Num robot prompts:\t" << numYourTurn << std::endl;
-		std::cout << "Tot num child moves:\t" << (goodChildMoves + badChildMoves) << std::endl;
-		std::cout << "Num good child moves:\t" << goodChildMoves << std::endl;
-		std::cout << "Num bad child moves:\t" << badChildMoves << std::endl;
-		std::cout << "Num prompts per move:\t" << ((double)numYourTurn / ((double)goodChildMoves + (double)badChildMoves)) << std::endl;
-		std::cout << std::endl;
-		std::cout << "Num good feedback:\t" << numGoodFeedback << std::endl;
-		std::cout << "Num bad feedback:\t" << numBadFeedback << std::endl;
-		std::cout << "Num robot good moves:\t" << goodRobotMoves << std::endl;
-		std::cout << "Num robot bad moves:\t" << badRobotMoves << std::endl;
-		std::cout << std::endl;
-		std::cout << "Mean reaction time:\t" << MeanOfInts(reactionTime) << std::endl;
-		std::cout << "Mean child move speed:\t" << MeanOfDoubles(moveSpeeds) << std::endl;
-		std::cout << "Mean child turn-taking:\t" << MeanOfDoubles(turnTaking) << std::endl;
-		std::cout << std::endl;*/
 
 		// -- store data for this session
 		sectionTimes.push_back(lengthTime);
-	
+
 	}	//END OF FILE PROCESSING FOR SINGLE FILE
-	
+
 	/////////////////////////////////////////////////////////////////////////////////////////////////////
 	//step 5a
 	//	-- write session stats to screen
@@ -479,7 +423,7 @@ int main(int argc, char *argv[])
 	std::cout << "Mean reaction time:\t" << MeanOfInts(reactionTime) << "\t\tSD: " << SDofInts(reactionTime) << "\tN: " << (int)reactionTime.size() << std::endl;
 	std::cout << "Mean child move speed:\t" << MeanOfDoubles(moveSpeeds) << "\t\tSD: " << SDofDoubles(moveSpeeds) << "\tN: " << (int)moveSpeeds.size() << std::endl;
 	std::cout << "Mean child turn-taking:\t" << MeanOfDoubles(turnTaking) << "\tSD: " << SDofDoubles(turnTaking) << "\tN: " << (int)turnTaking.size() << std::endl;
-	
+
 	/////////////////////////////////////////////////////////////////////////////////////////////////////
 	//step 5a
 	//	-- write session stats to file - at the moment one level up from the session data: OUTPATH
@@ -489,12 +433,12 @@ int main(int argc, char *argv[])
 	//header
 	outFile << "Session,Interaction time (s),N_libraries,N_prompts,N_childMoves,N_goodChild,N_badChild,N_promptsPerMove,N_goodFeedback,N_badFeedback,N_goodRobot,N_badRobot,reactionTime,sd,n,childSpeed,sd,n,childTurnTaking,sd,n" << std::endl;
 	//data
-	outFile << "," << TotalInts(sectionTimes) << "," << numLibraries << "," << numYourTurn << "," << (goodChildMoves + badChildMoves) << "," << goodChildMoves << "," << badChildMoves << "," 
-	<< ((double)numYourTurn / ((double)goodChildMoves + (double)badChildMoves)) << "," << numGoodFeedback << "," << numBadFeedback << "," << goodRobotMoves << "," << badRobotMoves 
+	outFile << "," << TotalInts(sectionTimes) << "," << numLibraries << "," << numYourTurn << "," << (goodChildMoves + badChildMoves) << "," << goodChildMoves << "," << badChildMoves << ","
+	<< ((double)numYourTurn / ((double)goodChildMoves + (double)badChildMoves)) << "," << numGoodFeedback << "," << numBadFeedback << "," << goodRobotMoves << "," << badRobotMoves
 	<< "," << MeanOfInts(reactionTime) << "," << SDofInts(reactionTime) << "," << (int)reactionTime.size() << "," << MeanOfDoubles(moveSpeeds) << "," << SDofDoubles(moveSpeeds) << ","
 	<< (int)moveSpeeds.size() << "," << MeanOfDoubles(turnTaking) << "," << SDofDoubles(turnTaking) << "," << (int)turnTaking.size() << std::endl;
 	outFile.close();
-	
+
 	return 0;
 }	//END OF MAIN
 
@@ -504,20 +448,20 @@ std::vector<std::string> Split (const std::string &input, char splitter)
 {
 	std::vector<std::string> toReturn;
 	toReturn.clear();
-	
+
 	std::stringstream ss(input);
 	std::string item;
-	while (std::getline(ss, item, splitter)) 
+	while (std::getline(ss, item, splitter))
 	{
 		toReturn.push_back(item);
 	}
-	
+
 	//seems as though final element has an extra character...
 	int size = toReturn.size();
 	std::string element = toReturn[size-1];	//the final element in vector
 	element.erase(element.size()-1);
 	toReturn[size-1] = element;
-	
+
 	return toReturn;
 }
 
@@ -529,9 +473,9 @@ int TimeInSeconds (std::string in)
 	int hour = atoi(HMS[0].c_str());
 	int minute = atoi(HMS[1].c_str());
 	int second = atoi(HMS[2].c_str());
-	
+
 	int timeReturn = (hour * 3600) + (minute * 60) + second;
-	
+
 	return timeReturn;
 }
 
@@ -545,7 +489,7 @@ double MeanOfInts (std::vector<int> in)
 		total += in[a];
 	}
 	double mean = ((double)total) / ((double)size);
-	
+
 	return mean;
 }
 
@@ -559,7 +503,7 @@ double MeanOfDoubles (std::vector<double> in)
 		total += in[a];
 	}
 	double mean = (total / size);
-	
+
 	return mean;
 }
 
@@ -581,14 +525,14 @@ double SDofInts (std::vector<int> in)
 	double sdReturn = 0.0;
 	double mean = MeanOfInts(in);
 	double sumDev = 0.0;
-	
+
 	for (int a = 0; a < (int)in.size(); a++)
 	{
 		sumDev = ((in[a] - mean) * (in[a] - mean));
 	}
-	
+
 	sdReturn = std::sqrt(sumDev / (double)in.size());
-	
+
 	return sdReturn;
 }
 
@@ -598,13 +542,13 @@ double SDofDoubles (std::vector<double> in)
 	double sdReturn = 0.0;
 	double mean = MeanOfDoubles(in);
 	double sumDev = 0.0;
-	
+
 	for(int a = 0; a < (int)in.size(); a++)
 	{
 		sumDev = ((in[a] - mean) * (in[a] - mean));
 	}
-	
+
 	sdReturn = std::sqrt(sumDev / (double)in.size());
-	
+
 	return sdReturn;
 }
