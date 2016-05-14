@@ -22,6 +22,22 @@ double SDofDoubles (std::vector<double>);
 
 int main(int argc, char *argv[])
 {
+	std::string PATH;
+	std::string OUTFILE
+
+	if ((argc < 3) || (argc > 3))
+	{
+		//not enough arguments
+		std::cout << "Not correct number of arguments - expect 2:" << std::endl;
+		std::cout << "1:\t \"input/directory/path/\" " << std::endl;
+		std::cout << "2:\t \"output-file.dat\" " << std::endl;
+	}
+	else
+	{
+		PATH.assign(argv[1], (int)argv[1].size());
+		OUTFILE.assign(argv[2], (int)argv[2].size());
+	}
+
 	printf("\n");
 	printf("=================================\n");
 	printf(" Sandtray Log Analysis Programme\n");
@@ -31,11 +47,13 @@ int main(int argc, char *argv[])
 
 	//eventually replace following with user selection...
 	//std::string PATH = "C:/Users/pebaxter/Dropbox/RESULTS/2015-06 WoZ sandtray therapy/child 1/session 6/";
-	std::string PATH = "C:/Users/pebaxter/Documents/Dropbox/RESULTS/2015-06 WoZ sandtray therapy/L.C/ados TT/";				//test pathname
-	std::string OUTPATH = "C:/Users/pebaxter/Documents/Dropbox/RESULTS/2015-06 WoZ sandtray therapy/L.C/";
+	//PATH = "C:/Users/pebaxter/Documents/Dropbox/RESULTS/2015-06 WoZ sandtray therapy/L.C/ados TT/";				//test pathname
+	//std::string OUTPATH = "C:/Users/pebaxter/Documents/Dropbox/RESULTS/2015-06 WoZ sandtray therapy/L.C/";
+
+	std::string OUTPATH = PATH;
 
 	//eventually replace following with child identifier...
-	std::string OUTFILE = "ados-session-data.dat";
+	//OUTFILE = "ados-session-data.dat";
 
 
 	////////////////////////////////////////
