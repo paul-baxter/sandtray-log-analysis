@@ -23,19 +23,22 @@ double SDofDoubles (std::vector<double>);
 int main(int argc, char *argv[])
 {
 	std::string PATH;
-	std::string OUTFILE
+	std::string OUTFILE;
 
 	if ((argc < 3) || (argc > 3))
 	{
 		//not enough arguments
-		std::cout << "Not correct number of arguments - expect 2:" << std::endl;
-		std::cout << "1:\t \"input/directory/path/\" " << std::endl;
-		std::cout << "2:\t \"output-file.dat\" " << std::endl;
+		std::cout << std::endl;
+		std::cout << "Not correct number of arguments provided - expect 2:" << std::endl;
+		std::cout << "\t1:\t \"input/directory/path/\" " << std::endl;
+		std::cout << "\t2:\t \"output-file-name.dat\" " << std::endl;
+		std::cout << std::endl;
+		return 1;
 	}
 	else
 	{
-		PATH.assign(argv[1], (int)argv[1].size());
-		OUTFILE.assign(argv[2], (int)argv[2].size());
+		PATH = argv[1];
+		OUTFILE = argv[2];
 	}
 
 	printf("\n");
@@ -45,16 +48,12 @@ int main(int argc, char *argv[])
 	printf("=================================\n");
 	printf("\n");
 
-	//eventually replace following with user selection...
-	//std::string PATH = "C:/Users/pebaxter/Dropbox/RESULTS/2015-06 WoZ sandtray therapy/child 1/session 6/";
-	//PATH = "C:/Users/pebaxter/Documents/Dropbox/RESULTS/2015-06 WoZ sandtray therapy/L.C/ados TT/";				//test pathname
-	//std::string OUTPATH = "C:/Users/pebaxter/Documents/Dropbox/RESULTS/2015-06 WoZ sandtray therapy/L.C/";
-
 	std::string OUTPATH = PATH;
 
-	//eventually replace following with child identifier...
-	//OUTFILE = "ados-session-data.dat";
-
+	std::cout << std::endl;
+	std::cout << "PATH: \t" << PATH << std::endl;
+	std::cout << "Output file: \t" << OUTFILE << std::endl;
+	std::cout << std::endl;
 
 	////////////////////////////////////////
 	// PROCESSING THRESHOLDS
@@ -75,7 +74,7 @@ int main(int argc, char *argv[])
 
 	if (Dir)
 	{
-		std::cout << "Directory found: " << std::endl;
+		std::cout << "Directory found" << std::endl;
 		std::cout << "\t" << PATH << std::endl;
 		std::cout << std::endl;
 	}
@@ -455,6 +454,7 @@ int main(int argc, char *argv[])
 	std::cout << "Mean reaction time:\t" << MeanOfInts(reactionTime) << "\t\tSD: " << SDofInts(reactionTime) << "\tN: " << (int)reactionTime.size() << std::endl;
 	std::cout << "Mean child move speed:\t" << MeanOfDoubles(moveSpeeds) << "\t\tSD: " << SDofDoubles(moveSpeeds) << "\tN: " << (int)moveSpeeds.size() << std::endl;
 	std::cout << "Mean child turn-taking:\t" << MeanOfDoubles(turnTaking) << "\tSD: " << SDofDoubles(turnTaking) << "\tN: " << (int)turnTaking.size() << std::endl;
+	std::cout << std::endl;
 
 	/////////////////////////////////////////////////////////////////////////////////////////////////////
 	//step 5a
