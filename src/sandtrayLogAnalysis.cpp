@@ -41,12 +41,12 @@ int main(int argc, char *argv[])
 		OUTFILE = argv[2];
 	}
 
-	printf("\n");
-	printf("=================================\n");
-	printf(" Sandtray Log Analysis Programme\n");
-	printf("         P. Baxter, 2016\n");
-	printf("=================================\n");
-	printf("\n");
+	std::cout << std::endl;
+	std::cout << "=================================" << std::endl;
+	std::cout << " Sandtray Log Analysis Programme" << std::endl;
+	std::cout << "         P. Baxter, 2016" << std::endl;
+	std::cout << "=================================" << std::endl;
+	std::cout << std::endl;
 
 	std::string OUTPATH = PATH;
 
@@ -90,7 +90,7 @@ int main(int argc, char *argv[])
 	{
 		if (DirEntry->d_type == isFile)
 		{
-			std::cout << "Found file: " << DirEntry->d_name << std::endl;
+			//std::cout << "Found file: " << DirEntry->d_name << std::endl;
 			fileNames.push_back(DirEntry->d_name);
 			fileCount++;
 		}
@@ -129,10 +129,10 @@ int main(int argc, char *argv[])
 		}
 	}
 	//final check of file names to see what the contents of the file list is now
-	std::cout << "New contents of file list:" << std::endl;
+	std::cout << "List of text files to analyse:" << std::endl;
 	for (int bb = 0; bb < (int)fileNames.size(); bb++)
 	{
-		std::cout << fileNames[bb] << std::endl;
+		std::cout << "\t" << fileNames[bb] << std::endl;
 	}
 	std::cout << std::endl;
 

@@ -3,7 +3,11 @@ Simple utility to analyse automatically generated log files from the EU FP7 DREA
 
 Currently assumes input file formats as determined by Sandtray logfile structure.
 
-Usage:
+Uses cmake:
+$ mkdir build && cd build
+$ cmake .. && cd ..
+
+Usage (don't forget trailing forward slash on path!):
 ./SandtrayLogAnalysis "path/to/data/directory/" "output-data-filename.dat"
 
 Context, motivation and sample output described in:
