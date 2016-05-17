@@ -7,7 +7,7 @@ Uses cmake:
 $ mkdir build && cd build
 $ cmake .. && cd ..
 
-Usage (don't forget trailing forward slash on path!):
+Usage:
 ./SandtrayLogAnalysis "path/to/data/directory/" "output-data-filename.dat"
 
 Context, motivation and sample output described in:

@@ -48,6 +48,12 @@ int main(int argc, char *argv[])
 	std::cout << "=================================" << std::endl;
 	std::cout << std::endl;
 
+	//check for trailing forward slash on path, insert if there isn't one
+	if (PATH[PATH.size()-1] != '/')
+	{
+		PATH += '/';
+	}
+
 	std::string OUTPATH = PATH;
 
 	std::cout << std::endl;
