@@ -59,6 +59,65 @@ int main(int argc, char *argv[])
 
 
 	/////////////////////////////////////////////////////////////////////////////////////////////////////
+	//step 0
+	//	-- get list of directory names in the assigned directory
+
+	std::vector<std::string> dirNames;
+	dirNames.clear();
+	int dirCount = 0;
+
+	unsigned char isDir = 0x4;		//use 0x8 for finding files
+	DIR *Folder;
+	struct dirent *FolderEntry;
+	Folder = opendir(PATH.c_str());
+
+	if (Folder)
+	{
+		std::cout << "Top level directory found:\t" << PATH << std::endl;
+	}
+	else
+	{
+		std::cout << "Cannot find top level directory:\t" << PATH << std::endl;
+		return 1;
+	}
+
+	while ((FolderEntry = readdir(Folder)))
+	{
+		if (FolderEntry->d_type == isDir)
+		{
+			//std::cout << "Found file: " << DirEntry->d_name << std::endl;
+			std::string name = FolderEntry->d_name;
+			if ((name == ".") || (name == ".."))
+			{
+				//don't include these in directory list
+			}
+			else
+			{
+				dirNames.push_back(name);
+				dirCount++;
+			}
+		}
+	}
+	std::cout << "Total number of directories found: " << dirCount << std::endl;
+	std::cout << std::endl;
+
+	//if no files, then don't bother continuing
+	if (dirCount == 0)
+	{
+		std::cout << "No directories found in selected top level directory, end of programme..." << std::endl;
+		std::cout << std::endl;
+		return 1;
+	}
+
+	std::cout << "List of directories to analyse:" << std::endl;
+	for (int fNum = 0; fNum < (int)dirNames.size(); fNum++)
+	{
+		std::cout << "\t" << dirNames[fNum] << std::endl;
+	}
+	std::cout << std::endl;
+
+
+	/////////////////////////////////////////////////////////////////////////////////////////////////////
 	//step 1
 	//	-- get list of filenames in the assigned directory
 	std::vector<std::string> fileNames;
