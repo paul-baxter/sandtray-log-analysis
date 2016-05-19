@@ -7,6 +7,7 @@
 #include <sstream>
 #include <string>
 #include <cmath>
+#include <algorithm>
 #include <string.h>
 #include <dirent.h>
 #include "helperFuncs.h"
@@ -108,6 +109,9 @@ int main(int argc, char *argv[])
 		std::cout << std::endl;
 		return 1;
 	}
+
+	//sort vector to make sure in correct order!
+	sort( dirNames.begin(), dirNames.end() );
 
 	std::cout << "List of directories to analyse:" << std::endl;
 	for (int fNum = 0; fNum < (int)dirNames.size(); fNum++)
@@ -566,7 +570,7 @@ int main(int argc, char *argv[])
 	//data from the overall intervention containers
 	for (int s = 0; s < dirCount; s++)
 	{
-		outFile << (s+1) << "," << IsectionTimes[s] << "," << InumLibraries[s] << "," << InumYourTurn[s] << "," << IchildMoves[s] << "," << IgoodChildMoves[s] << "," << IbadChildMoves[s] << "," << IpromptsPerMove[s] << "," << InumGoodFeedback[s] << "," << InumBadFeedback[s] << "," << IgoodRobotMoves[s] << "," << IbadRobotMoves[s]		<< "," << IreactionTimeM[s] << "," << IreactionTimeSD[s] << "," << IreactionTimeN[s] << "," << ImoveSpeedM[s] << "," << ImoveSpeedSD[s] << "," << ImoveSpeedN[s] << "," << IturnTakingM[s] << "," << IturnTakingSD[s] << "," << IturntakingN[s] << std::endl;
+		outFile << dirNames[s] << "," << IsectionTimes[s] << "," << InumLibraries[s] << "," << InumYourTurn[s] << "," << IchildMoves[s] << "," << IgoodChildMoves[s] << "," << IbadChildMoves[s] << "," << IpromptsPerMove[s] << "," << InumGoodFeedback[s] << "," << InumBadFeedback[s] << "," << IgoodRobotMoves[s] << "," << IbadRobotMoves[s]		<< "," << IreactionTimeM[s] << "," << IreactionTimeSD[s] << "," << IreactionTimeN[s] << "," << ImoveSpeedM[s] << "," << ImoveSpeedSD[s] << "," << ImoveSpeedN[s] << "," << IturnTakingM[s] << "," << IturnTakingSD[s] << "," << IturntakingN[s] << std::endl;
 	}
 	outFile.close();
 
